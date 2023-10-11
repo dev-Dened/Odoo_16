@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-16-db:/var/lib/postgresql/data/pgdata
+  web:
+    image: odoo:16
+    links:
+      - db:db
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-16-web:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+volumes:
+  odoo-16-db: 
+  odoo-16-web:
